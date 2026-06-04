@@ -1,4 +1,4 @@
-## Secret Hitler Mobile
+# Secret Hitler Mobile
 
 A mobile-friendly, browser-based adaptation of Secret Hitler, designed for in-person play using a single shared device.
 
@@ -6,7 +6,7 @@ This project automates role assignment, policy decks, government formation, spec
 
 The entire application runs locally in the browser as a single standalone HTML file. No installation, server, or internet connection is required after downloading.
 
-# Features
+## Features
 
 - Complete implementation of Secret Hitler
 - Mobile-first interface optimized for phones and tablets
@@ -22,15 +22,15 @@ The entire application runs locally in the browser as a single standalone HTML f
 - Optional device-passing mode for Bugging and Recruitment powers
 - Fully self-contained HTML application
 
-# Running the Project
+## Running the Project
 
-# Option 1: Run Locally
+## Option 1: Run Locally
 
 Download the HTML file and open it in any modern web browser.
 
 No installation, dependencies, or server setup is required.
 
-# Option 2: GitHub Pages
+## Option 2: GitHub Pages
 
 This project is hosted directly in GitHub Pages.
 
@@ -46,9 +46,9 @@ Play here: https://brluquinha19.github.io/Secret-Hitler-In-Person-Play/
 
 The application manages the game flow while players perform discussion, voting, deduction, and social interaction in person.
 
-## Credits
+# Credits
 
-# Original Secret Hitler
+## Original Secret Hitler
 
 Secret Hitler was originally created by:
 
@@ -61,7 +61,7 @@ Published by Goat, Wolf, & Cabbage.
 Official website:
 https://www.secrethitler.com
 
-# Socialist Expansion
+## Socialist Expansion
 
 This project includes support for the Socialist Expansion for Secret Hitler.
 
@@ -74,7 +74,7 @@ Originally published by u/havosh on r/SecretHitler.
 
 Credit for the Socialist Expansion mechanics, roles, powers, and game design belongs entirely to its original creators.
 
-# This Adaptation
+## This Adaptation
 
 This repository contains an unofficial browser-based adaptation created as a fan project.
 
