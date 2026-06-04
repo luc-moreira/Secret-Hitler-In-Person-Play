@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Secret Hitler</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0a07; --bg2:#141008; --bg3:#1c1610; --paper:#f5ead0; --paper2:#ede0c0;
+  --red:#8b1a1a; --red2:#b52020; --red3:#d42e2e;
+  --gold:#c9922a; --gold2:#e8b84b; --gold3:#f5d080;
+  --liberal:#1a3a8b; --liberal2:#2a5cc4;
+  --fascist:#8b1a1a; --socialist:#1a6b2a; --socialist2:#2a9b3a;
+  --text:#f0e6cc; --text2:#c8b898; --text3:#8a7a60;
+  --border:#3a2e1e; --shadow:rgba(0,0,0,0.8);
+  --font-body:'IM Fell English',serif;
+  --font-ui:'Cinzel',serif;
+  --font-display:'Cinzel Decorative',serif;
+}
+html.legivel{--font-body:'Inter',sans-serif;--font-ui:'Inter',sans-serif;--font-display:'Playfair Display',serif;}
+html.legivel body{font-size:15px;}
+html.legivel .alert{font-style:normal;}
+html.legivel .role-desc{font-style:normal;}
+html.legivel .text-muted{font-style:normal;}
+html.legivel .btn{letter-spacing:.08em;}
+html.legivel .phase-tag{letter-spacing:.15em;}
+html.legivel .section-title{letter-spacing:.15em;}
+html.legivel .cover-pass{letter-spacing:.15em;}
+html.legivel .cover-btn{letter-spacing:.12em;}
+html.legivel .card-title{letter-spacing:.15em;}
+html.legivel input[type=text],html.legivel input[type=number]{font-size:16px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;}
+body{background-image:radial-gradient(ellipse at 20% 20%,rgba(139,26,26,.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(201,146,42,.06) 0%,transparent 60%);}
+.screen{display:none;min-height:100vh;padding:16px;flex-direction:column;}
+.screen.active{display:flex;}
+.game-header{text-align:center;padding:24px 16px 16px;position:relative;}
+.game-header::after{content:'';display:block;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),var(--gold),transparent);margin:12px auto 0;max-width:320px;}
+.title-main{font-family:var(--font-display);font-size:clamp(20px,6vw,32px);font-weight:900;color:var(--gold2);text-shadow:0 0 30px rgba(232,184,75,.4),2px 2px 0 #000;letter-spacing:.05em;line-height:1.2;}
+.title-sub{font-family:var(--font-ui);font-size:clamp(9px,2.5vw,13px);color:var(--text3);letter-spacing:.3em;text-transform:uppercase;margin-top:4px;}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:16px;margin:8px 0;position:relative;}
+.card::before{content:'';position:absolute;inset:0;border-radius:4px;background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,transparent 50%);pointer-events:none;}
+.card-title{font-family:var(--font-ui);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.btn{display:block;width:100%;padding:14px 20px;border:none;border-radius:3px;font-family:var(--font-ui);font-size:13px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center;position:relative;overflow:hidden;}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:linear-gradient(135deg,var(--red) 0%,var(--red2) 100%);color:var(--paper);box-shadow:0 4px 16px rgba(139,26,26,.4),inset 0 1px 0 rgba(255,255,255,.1);border:1px solid rgba(180,40,40,.5);}
+.btn-gold{background:linear-gradient(135deg,#7a5a10 0%,var(--gold) 50%,#7a5a10 100%);color:#1a1000;box-shadow:0 4px 16px rgba(201,146,42,.3),inset 0 1px 0 rgba(255,255,255,.2);border:1px solid rgba(232,184,75,.4);}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border);}
+.btn-ghost:active{background:rgba(255,255,255,.05);}
+.btn-socialist{background:linear-gradient(135deg,#0f3a18 0%,var(--socialist) 50%,#0f3a18 100%);color:var(--paper);box-shadow:0 4px 16px rgba(26,107,42,.4);border:1px solid rgba(42,155,58,.4);}
+.btn-sm{padding:10px 14px;font-size:11px;}
+.btn+.btn{margin-top:8px;}
+.input-group{margin:8px 0;}
+.input-label{font-family:var(--font-ui);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;display:block;}
+input[type=text],input[type=number]{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:var(--font-body);font-size:15px;padding:10px 12px;outline:none;transition:border-color .2s;}
+input:focus{border-color:var(--gold);}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(58,46,30,.5);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:14px;color:var(--text2);}
+.toggle-desc{font-size:11px;color:var(--text3);margin-top:2px;font-style:italic;}
+.toggle{position:relative;width:48px;height:26px;flex-shrink:0;margin-left:12px;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:#2a1e10;border:1px solid var(--border);border-radius:26px;cursor:pointer;transition:.3s;}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:var(--text3);border-radius:50%;transition:.3s;}
+.toggle input:checked+.toggle-slider{background:var(--red);border-color:var(--red2);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(22px);background:var(--paper);}
+.score-track{display:flex;gap:4px;align-items:center;margin:6px 0;}
+.score-label{font-family:var(--font-ui);font-size:10px;letter-spacing:.1em;color:var(--text3);width:80px;flex-shrink:0;}
+.score-pips{display:flex;gap:3px;flex:1;}
+.pip{flex:1;height:20px;border-radius:2px;border:1px solid;transition:all .3s;}
+.pip.liberal{border-color:#1a3a8b;background:rgba(26,58,139,.15);}
+.pip.liberal.filled{background:linear-gradient(135deg,var(--liberal),var(--liberal2));border-color:var(--liberal2);box-shadow:0 0 6px rgba(42,92,196,.5);}
+.pip.fascist{border-color:#5a1a1a;background:rgba(139,26,26,.15);}
+.pip.fascist.filled{background:linear-gradient(135deg,var(--fascist),var(--red2));border-color:var(--red2);box-shadow:0 0 6px rgba(180,32,32,.5);}
+.pip.socialist{border-color:#1a5a2a;background:rgba(26,107,42,.15);}
+.pip.socialist.filled{background:linear-gradient(135deg,var(--socialist),var(--socialist2));border-color:var(--socialist2);box-shadow:0 0 6px rgba(42,155,58,.5);}
+.role-display{text-align:center;padding:20px 16px;border-radius:4px;position:relative;overflow:hidden;}
+.role-display.liberal{background:linear-gradient(160deg,#0a1a4a,#0f2560,#0a1a4a);border:2px solid rgba(42,92,196,.5);}
+.role-display.fascist{background:linear-gradient(160deg,#2a0a0a,#4a1010,#2a0a0a);border:2px solid rgba(180,32,32,.5);}
+.role-display.hitler{background:linear-gradient(160deg,#1a0808,#380c0c,#1a0808);border:2px solid rgba(232,184,75,.4);}
+.role-display.socialista,.role-display.socialist{background:linear-gradient(160deg,#0a2a10,#0f3a18,#0a2a10);border:2px solid rgba(42,155,58,.5);}
+.role-icon{font-size:52px;margin-bottom:8px;}
+.role-name{font-family:var(--font-display);font-size:clamp(18px,6vw,26px);font-weight:700;margin-bottom:8px;}
+.role-display.liberal .role-name{color:#7ab0ff;}
+.role-display.fascist .role-name{color:#ff7070;}
+.role-display.hitler .role-name{color:var(--gold2);}
+.role-display.socialista .role-name,.role-display.socialist .role-name{color:#70e080;}
+.role-desc{font-style:italic;color:var(--text2);font-size:14px;line-height:1.5;}
+.role-allies{margin-top:12px;padding:10px;background:rgba(0,0,0,.3);border-radius:3px;font-size:13px;color:var(--text2);line-height:1.7;}
+.role-allies strong{color:var(--gold2);font-style:normal;}
+.cover-screen{background:var(--bg);text-align:center;padding:40px 24px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.cover-eyes{font-size:72px;margin-bottom:16px;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.95)}}
+.cover-pass{font-family:var(--font-ui);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.cover-name{font-family:var(--font-display);font-size:clamp(22px,7vw,36px);color:var(--gold2);text-shadow:0 0 20px rgba(232,184,75,.5);margin-bottom:24px;}
+.cover-btn{background:rgba(20,16,8,.9);border:2px solid var(--border);border-radius:4px;padding:20px 32px;color:var(--text3);font-family:var(--font-ui);font-size:11px;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;width:100%;max-width:320px;transition:all .2s;}
+.cover-btn:active{border-color:var(--gold);color:var(--gold2);}
+.vote-btn-row{display:flex;gap:10px;margin:8px 0;}
+.vote-btn-row .btn{flex:1;}
+.btn-ja{background:linear-gradient(135deg,#0f3a18,#1a6b2a);color:#90f0a0;border:1px solid rgba(42,155,58,.5);box-shadow:0 4px 12px rgba(26,107,42,.3);}
+.btn-nein{background:linear-gradient(135deg,#3a0f0f,#6b1a1a);color:#f09090;border:1px solid rgba(180,32,32,.5);box-shadow:0 4px 12px rgba(139,26,26,.3);}
+.player-item{display:flex;align-items:center;padding:12px;border-radius:3px;margin:4px 0;cursor:pointer;border:1px solid var(--border);background:rgba(0,0,0,.2);transition:all .15s;gap:12px;}
+.player-item:active{background:rgba(201,146,42,.1);border-color:var(--gold);}
+.player-item.dead{opacity:.4;text-decoration:line-through;cursor:default;pointer-events:none;}
+.player-num{font-family:var(--font-ui);font-size:12px;color:var(--text3);width:20px;text-align:center;flex-shrink:0;}
+.player-name{flex:1;font-size:16px;}
+.policy-cards{display:flex;gap:8px;margin:12px 0;}
+.policy-card{flex:1;padding:16px 8px;border-radius:4px;text-align:center;cursor:pointer;border:2px solid;transition:all .15s;}
+.policy-card:active{transform:scale(.95);}
+.policy-card.liberal{border-color:rgba(42,92,196,.5);background:rgba(26,58,139,.2);}
+.policy-card.fascista,.policy-card.fascist{border-color:rgba(180,32,32,.5);background:rgba(139,26,26,.2);}
+.policy-card.socialista,.policy-card.socialist{border-color:rgba(42,155,58,.5);background:rgba(26,107,42,.2);}
+.policy-card.liberal.selected{border-color:var(--liberal2);background:rgba(42,92,196,.35);box-shadow:0 0 16px rgba(42,92,196,.4);}
+.policy-card.fascista.selected,.policy-card.fascist.selected{border-color:var(--red2);background:rgba(180,32,32,.35);box-shadow:0 0 16px rgba(180,32,32,.4);}
+.policy-icon{font-size:28px;margin-bottom:6px;}
+.policy-type{font-family:var(--font-ui);font-size:10px;letter-spacing:.2em;text-transform:uppercase;}
+.policy-card.liberal .policy-type{color:#7ab0ff;}
+.policy-card.fascista .policy-type,.policy-card.fascist .policy-type{color:#ff8080;}
+.policy-card.socialista .policy-type,.policy-card.socialist .policy-type{color:#70e080;}
+.gov-bar{display:flex;gap:6px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:3px;padding:8px 10px;margin:4px 0;align-items:center;}
+.gov-role{font-family:var(--font-ui);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);}
+.gov-name{font-size:14px;color:var(--gold2);flex:1;}
+.phase-header{text-align:center;padding:12px 0 4px;}
+.phase-tag{display:inline-block;font-family:var(--font-ui);font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:4px 12px;border-radius:20px;border:1px solid var(--border);color:var(--text3);background:rgba(0,0,0,.3);margin-bottom:6px;}
+.phase-title{font-family:var(--font-display);font-size:clamp(16px,5vw,22px);color:var(--gold2);text-shadow:0 0 16px rgba(232,184,75,.3);}
+.chaos-counter{display:flex;gap:4px;align-items:center;}
+.chaos-pip{width:18px;height:18px;border-radius:50%;border:1px solid #5a3a1a;background:rgba(90,58,26,.2);transition:all .3s;}
+.chaos-pip.filled{background:var(--red2);border-color:var(--red3);box-shadow:0 0 6px rgba(212,46,46,.6);}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:12px 0;}
+.section-title{font-family:var(--font-ui);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin:16px 0 8px;}
+.alert{border-radius:3px;padding:12px 14px;font-size:13px;margin:8px 0;line-height:1.5;font-style:italic;}
+.alert-warning{background:rgba(90,58,26,.3);border:1px solid #5a3a1a;color:#e8c87a;}
+.alert-info{background:rgba(26,58,139,.25);border:1px solid rgba(42,92,196,.4);color:#a0c0f0;}
+.alert-success{background:rgba(26,107,42,.25);border:1px solid rgba(42,155,58,.4);color:#90e0a0;}
+.alert-danger{background:rgba(139,26,26,.25);border:1px solid rgba(180,32,32,.4);color:#f09090;}
+.policy-announce{text-align:center;padding:24px 16px;border-radius:6px;margin:8px 0;}
+.policy-announce.liberal{background:radial-gradient(ellipse,rgba(42,92,196,.3),rgba(26,58,139,.15));border:2px solid rgba(42,92,196,.6);}
+.policy-announce.fascista,.policy-announce.fascist{background:radial-gradient(ellipse,rgba(180,32,32,.3),rgba(139,26,26,.15));border:2px solid rgba(180,32,32,.6);}
+.policy-announce.socialista,.policy-announce.socialist{background:radial-gradient(ellipse,rgba(42,155,58,.3),rgba(26,107,42,.15));border:2px solid rgba(42,155,58,.6);}
+.announce-emoji{font-size:56px;animation:drop .5s ease-out;}
+@keyframes drop{from{transform:translateY(-30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.announce-type{font-family:var(--font-display);font-size:clamp(20px,6vw,28px);font-weight:700;margin-top:8px;}
+.policy-announce.liberal .announce-type{color:#a0c8ff;}
+.policy-announce.fascista .announce-type,.policy-announce.fascist .announce-type{color:#ff9090;}
+.policy-announce.socialista .announce-type,.policy-announce.socialist .announce-type{color:#90f0a0;}
+.num-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;}
+.num-btn{aspect-ratio:1;border:1px solid var(--border);background:rgba(0,0,0,.3);color:var(--text2);font-family:var(--font-ui);font-size:20px;border-radius:3px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;width:100%;}
+.num-btn:active{background:rgba(201,146,42,.2);border-color:var(--gold);color:var(--gold2);}
+.victory-screen{text-align:center;padding:32px 16px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.victory-icon{font-size:80px;animation:victoryPop .6s cubic-bezier(.175,.885,.32,1.275) both;}
+@keyframes victoryPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.victory-title{font-family:var(--font-display);font-size:clamp(24px,8vw,40px);font-weight:900;margin:16px 0 8px;animation:fadeUp .5s .2s ease-out both;}
+@keyframes fadeUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.victory-reason{font-style:italic;color:var(--text2);font-size:15px;animation:fadeUp .5s .4s ease-out both;max-width:320px;}
+.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.mt-8{margin-top:8px;} .mt-16{margin-top:16px;} .mb-8{margin-bottom:8px;}
+.text-center{text-align:center;} .text-muted{color:var(--text3);font-size:13px;font-style:italic;}
+.flex-row{display:flex;gap:8px;} .flex-row .btn{flex:1;}
+.player-setup-row{display:flex;align-items:center;gap:8px;margin:4px 0;}
+.player-setup-row input{flex:1;}
+.del-btn{width:36px;height:36px;border:1px solid var(--border);background:rgba(139,26,26,.2);color:var(--text3);border-radius:3px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.del-btn:active{background:rgba(139,26,26,.5);color:#ff8080;}
+/* lang selector */
+.lang-select{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:var(--font-ui);font-size:12px;padding:6px 10px;outline:none;cursor:pointer;transition:border-color .2s;}
+.lang-select:focus{border-color:var(--gold);}
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="screen-setup" class="screen active">
+  <div class="game-header">
+    <div class="title-main" id="hdr-title">Secret Hitler</div>
+    <div class="title-sub" id="hdr-subtitle">—</div>
+  </div>
+  <div class="scroll-area" style="padding-bottom:24px;">
+    <div class="card">
+      <div class="card-title" id="cfg-card-title">⚙</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label" id="tog-socialist-label">—</div>
+          <div class="toggle-desc" id="tog-socialist-desc">—</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="cfg-socialista"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" id="pass-toggle-row">
+        <div>
+          <div class="toggle-label" id="tog-pass-label">—</div>
+          <div class="toggle-desc" id="tog-pass-desc">—</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="cfg-passar" checked onchange="salvarConfigs()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label" id="tog-font-label">—</div>
+          <div class="toggle-desc" id="tog-font-desc">—</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="cfg-fonte" onchange="toggleFonte(this.checked)"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label" id="tog-lang-label">—</div>
+        </div>
+        <select id="lang-select" class="lang-select" onchange="onLangChange(this.value)"></select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="players-card-title">👥</div>
+      <div id="player-list"></div>
+      <div class="flex-row mt-8">
+        <button class="btn btn-ghost btn-sm" id="btn-add-player" onclick="addPlayer()">+</button>
+        <button class="btn btn-ghost btn-sm" id="btn-remove-player" onclick="removePlayer()">−</button>
+      </div>
+      <div id="player-count-info" class="text-muted mt-8" style="font-size:12px;"></div>
+    </div>
+    <button class="btn btn-gold mt-16" id="btn-start" onclick="startGame()">⚔</button>
+    <div id="setup-error" class="alert alert-danger mt-8" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- COVER SCREEN -->
+<div id="screen-cover" class="screen">
+  <div class="cover-screen">
+    <div class="cover-eyes">🙈</div>
+    <div class="cover-pass" id="cover-pass-label">—</div>
+    <div class="cover-name" id="cover-name">—</div>
+    <button class="cover-btn" id="cover-btn" onclick="coverContinue()">—</button>
+  </div>
+</div>
+
+<!-- ROLE SCREEN -->
+<div id="screen-role" class="screen">
+  <div style="max-width:480px;margin:0 auto;width:100%;">
+    <div class="phase-header mt-8">
+      <div class="phase-tag" id="role-screen-tag">—</div>
+    </div>
+    <div id="role-card" class="role-display" style="margin:12px 0;"></div>
+    <div id="role-allies"></div>
+    <button class="btn btn-ghost mt-16" id="role-hide-btn" onclick="roleDone()">—</button>
+  </div>
+</div>
+
+<!-- MAIN GAME SCREEN -->
+<div id="screen-game" class="screen">
+  <div style="max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;">
+    <div class="card" style="margin-top:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-family:var(--font-ui);font-size:10px;letter-spacing:.2em;color:var(--text3);"><span id="game-turn-label">—</span> <span id="stat-turno">1</span></span>
+        <div class="chaos-counter" id="chaos-counter"></div>
+      </div>
+      <div class="score-track"><span class="score-label" id="track-lib-label">—</span><div class="score-pips" id="pips-liberal"></div></div>
+      <div class="score-track"><span class="score-label" id="track-fas-label">—</span><div class="score-pips" id="pips-fascist"></div></div>
+      <div class="score-track" id="track-socialist" style="display:none;"><span class="score-label" id="track-soc-label">—</span><div class="score-pips" id="pips-socialist"></div></div>
+      <div class="divider" style="margin:8px 0 6px;"></div>
+      <div id="gov-bar"></div>
+      <div id="status-alerts" style="margin-top:4px;"></div>
+    </div>
+    <div class="scroll-area" style="flex:1;padding-bottom:24px;" id="phase-content"></div>
+  </div>
+</div>
+
+<!-- POWER PASS SCREEN -->
+<div id="screen-power-pass" class="screen">
+  <div style="max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;padding-top:8px;">
+    <div class="phase-header">
+      <div class="phase-tag" id="power-pass-tag">—</div>
+      <div class="phase-title" id="power-pass-title">—</div>
+    </div>
+    <div id="power-pass-content" class="scroll-area" style="flex:1;padding-bottom:24px;"></div>
+  </div>
+</div>
+
+<!-- VICTORY SCREEN -->
+<div id="screen-victory" class="screen">
+  <div class="victory-screen">
+    <div class="victory-icon" id="victory-icon">🏆</div>
+    <div class="victory-title" id="victory-title">—</div>
+    <div class="victory-reason" id="victory-reason">—</div>
+    <div class="card mt-16" style="width:100%;max-width:400px;text-align:left;">
+      <div class="card-title" id="victory-roles-title">—</div>
+      <div id="victory-roles"></div>
+    </div>
+    <button class="btn btn-gold mt-16" style="max-width:320px;" id="btn-new-game" onclick="showScreen('screen-setup');setupInit();">↩</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════ ESTADO ═══════════════
+const G={
+  jogadores:[],papeis:{},membros:{},
+  presidIdx:0,chanceler:null,chairman:null,
+  ultPresEleito:null,ultChanEleito:null,
+  eleicoesNegadas:0,polLib:0,polFas:0,polSoc:0,
+  hitlerZone:false,vetoOk:false,censura:false,
+  mortos:[],investigados:[],deck:[],descarte:[],
+  turno:1,fase:'nominar',poderPendente:null,
+  hitlerNome:null,vencedor:null,
+  eleicaoEspAtiva:false,eleicaoEspRetIdx:0,log:[],
+  cfgSocialista:false,cfgPassar:true,
+  _coverCb:null,_roleQueue:[],_roleIdx:0,_mostrarAliados:false,
+  _chairmanViu:false,_legFase:null,_hitlerRecrutado:false,
+};
+
+// ═══════════════ I18N ═══════════════
+// Idiomas embutidos diretamente no HTML para funcionar sem servidor.
+// Para adicionar um idioma: copie um bloco abaixo, traduza os valores,
+// e adicione a entrada em AVAILABLE_LANGS.
+
+const LANG_DATA = {
+"en": {"_meta":{"code":"en","name":"English"},"title":"Secret Hitler","subtitle":"In-Person Game","setup":{"cardTitle":"⚙ Settings","toggleSocialist":"Socialist Expansion","toggleSocialistDesc":"Adds the Socialist party and Chairman role","togglePass":"Pass Device (Bugging/Recruitment)","togglePassDesc":"Off = table mode, everyone closes their eyes","toggleFont":"Readable Font","toggleFontDesc":"Inter (sans-serif) instead of IM Fell English","playersCardTitle":"👥 Players","addPlayer":"+ Add","removePlayer":"− Remove","playerDefault":"Player","playerPlaceholder":"Player {n}","playerCount":"{n} players (min {min}, max {max})","startGame":"⚔ Start Game","errorCount":"Invalid count: {n}. Must be between {min} and {max}.","langLabel":"Language"},"cover":{"passTo":"Pass the device to","press":"[ Press to continue ]","seeRole":"See your role in secret"},"role":{"screenTag":"Your Secret Role","hideBtn":"[ Hide and pass the device ]","liberal":{"name":"LIBERAL","desc":"You are a Liberal. Find the fascists and stop Hitler from being elected Chancellor!"},"fascist":{"name":"FASCIST","desc":"You are a Fascist. Help Hitler seize power!","descBlind":"You are a Fascist."},"hitler":{"name":"HITLER","descKnows":"You are HITLER. The Fascists know who you are. Pretend to be a Liberal.","descBlind":"You are HITLER. You do NOT know who the Fascists are, but they know who you are. Pretend to be a Liberal.","hitlerRecruited":"⚠ The Socialists think they recruited you. They don't know you are Hitler."},"socialist":{"name":"SOCIALIST","desc":"You are a Socialist. Unite your party!","descBlind":"You are a Socialist.","alone":"You are the only Socialist for now."},"alliesHitler":"Hitler:","alliesFascists":"Other Fascists:","alliesSocialists":"Other Socialists:","alliesSocialistsLabel":"Socialists:","alliesFascistsLabel":"Fascists:","none":"none"},"game":{"turn":"ROUND","presLabel":"🎩 President","chanLabel":"📜 Chancellor","chairLabel":"🪑 Chairman","trackLiberal":"🔵 Liberals","trackFascist":"🔴 Fascists","trackSocialist":"🟢 Socialists","hitlerZone":"⚠ HITLER ZONE","vetoAvail":"🚫 Veto available","censorActive":"🔇 Censorship active"},"nominate":{"phase":"Phase 1","title":"Nomination","prompt":"<strong>{pres}</strong>, choose your Chancellor:","eligible":"Eligible players","noEligible":"No eligible players!"},"vote":{"phase":"Phase 2","title":"Vote","instruction":"Conduct the vote using the physical <strong>Ja / Nein</strong> cards.","result":"Result","approved":"✓ APPROVED","approvedSub":"Majority Ja","rejected":"✗ REJECTED","rejectedSub":"Tie or Nein"},"chairman":{"phase":"Chairman","title":"Choose the Chairman","prompt":"Chancellor <strong>{chan}</strong>, choose the Chairman:"},"legislative":{"chairmanPhase":"Chairman","chairmanTitle":"Peek Top Card","chairmanInfo":"The Chairman must secretly look at the top of the deck.","chairmanBtn":"📋 Chairman {chair}: peek top card","chairmanResult":"Top of Deck","chairmanSecret":"Only you, Chairman, have this information.","chairmanHide":"[ Hide and continue ]","presPhase":"Legislative","presTitle":"President Discards","presBtn":"📋 President {pres}: draw 3 cards","presCover":"Draw 3 policies and discard 1","presPrompt":"Choose 1 policy to <strong>DISCARD</strong>:","chanCover":"Receive 2 policies and enact 1","chanPhase":"Chancellor","chanTitle":"Enact 1 Policy","chanPrompt":"Choose 1 policy to <strong>ENACT</strong>:","vetoBtn":"🚫 Propose VETO of both cards","vetoPhase":"Veto","vetoTitle":"Veto Proposal","vetoPrompt":"Chancellor proposed to VETO both. President {pres}, do you agree?","vetoAccept":"✓ Yes, Veto","vetoDecline":"✗ No, Refuse","vetoRejectedTitle":"Veto Refused","vetoRejectedMsg":"Veto rejected. Chancellor must enact a policy.","announcedPhase":"Policy Enacted","announceBtn":"[ Continue ]","chaosPhase":"Chaos!","chaosTitle":"Chaotic Policy","chaosMsg":"3 failed elections! Top card policy enacted."},"policies":{"Liberal":"Liberal","Fascista":"Fascist","Socialista":"Socialist"},"powers":{"fascistTag":"Fascist Power","socialistTag":"Socialist Power","investigate":{"title":"Investigate","prompt":"President <strong>{pres}</strong>, choose someone to investigate:","noTarget":"No available targets.","continueBtn":"Continue","cover":"See {target}'s loyalty","resultTitle":"Result","loyaltyLabel":"{target}'s Loyalty","hideBtn":"[ Hide and continue ]"},"peek":{"title":"Peek Deck","btn":"📋 President {pres}: peek at the next 3 cards","cover":"See the next 3 cards","subtitle":"Next 3 Cards","hideBtn":"[ Hide and continue ]"},"specialElection":{"title":"Special Election","prompt":"President <strong>{pres}</strong>, choose the next Presidential Candidate:"},"execute":{"title":"Execution","prompt":"President <strong>{pres}</strong>, choose who to <strong>EXECUTE</strong>:","resultTitle":"Execution","resultMsg":"Executed. Role remains secret.","continueBtn":"[ Continue ]"},"confession":{"title":"Confession","prompt":"President <strong>{pres}</strong>, choose who will receive your confession:","cover":"{pres} will confess their loyalty","loyaltyLabel":"{pres}'s Loyalty","hideBtn":"[ Hide and continue ]"},"congress":{"title":"Congress","cardTitle":"Instructions","steps":["Everyone close their eyes.","All <strong style=\"color:#80f090\">Socialists</strong> open their eyes to recognize the new member.","(If there is no new member, the recruited player was Hitler!)","Everyone closes their eyes. Then everyone opens them."],"doneBtn":"[ Congress done ]"},"fiveYear":{"title":"Five-Year Plan","msg":"2 Socialist policies and 1 Liberal policy added to the deck. Deck reshuffled.","continueBtn":"[ Continue ]"},"bugging":{"title":"Bugging","mesaCardTitle":"Instructions — Table Mode","mesaSteps":["All players <strong>close their eyes</strong>.","Only <strong style=\"color:#80f090\">Socialists</strong> open their eyes.","Socialists: choose who to investigate and tap <strong>without lifting the phone off the table</strong>."],"mesaBtn":"✊ Socialists: Choose target","chooseTitle":"Choose target","chooseSubtitle":"Who to investigate?","resultTitle":"Result","loyaltyLabel":"{target}'s Loyalty","mesaStep4":"All <strong style=\"color:#80f090\">Socialists</strong> close their eyes.","mesaHideBtn":"[ Hide screen ]","waitingMsg":"WAITING","allOpenBtn":"5. Everyone opens their eyes → [ Continue ]","passIsSocialist":"You are a Socialist — see instructions","passNotSocialist":"Type a number between 1 and 9","passChoose":"You are a Socialist. Choose who to investigate:","passResult":"You are a Socialist. Bugging result:","passInvestigated":"Investigated:","passNumLabel":"Type a number to continue"},"recruitment":{"title":"Recruitment","noTargets":"No non-Socialist players to recruit.","continueBtn":"Continue","mesaCardTitle":"Instructions — Table Mode","mesaSteps":["All players <strong>close their eyes</strong>.","Only <strong style=\"color:#80f090\">Socialists</strong> open their eyes.","Socialists: choose who to recruit and tap <strong>without lifting the phone off the table</strong>."],"mesaBtn":"✊ Socialists: Choose recruit","chooseTitle":"Choose recruit","chooseSubtitle":"Who to recruit?","recruited":"<strong>{target}</strong> has been recruited to the Socialists.","mesaStep4":"All <strong style=\"color:#80f090\">Socialists</strong> close their eyes.","mesaHideBtn":"[ Hide screen ]","waitingMsg":"WAITING","allOpenBtn":"5. Everyone opens their eyes → [ Continue ]","passIsSocialist":"You are a Socialist — see instructions","passNotSocialist":"Type a number between 1 and 9","passChoose":"You are a Socialist. Choose who to recruit:","passRecruited":"Recruited:","passNumLabel":"Type a number to continue"}},"victory":{"Liberal":"LIBERAL VICTORY","Fascista":"FASCIST VICTORY","Socialista":"SOCIALIST VICTORY","rolesTitle":"Role Reveal","converted":"(converted)","dead":"💀","newGame":"↩ New Game"},"checkVictory":{"liberal":"{n} Liberal policies enacted by the Liberals!","fascist":"The Fascists enacted 6 Fascist policies!","socialist":"The Socialists enacted {n} policies!","hitlerElected":"{name} (Hitler) elected Chancellor in the Hitler Zone!","hitlerExecuted":"{name} (Hitler) was executed!"},"chaos":{"electionDenied":"Election failed ({n}/3)."},"misc":{"arrowBtn":"→","numPadInstruction":"Type a number to continue"}},
+
+"pt-BR": {"_meta":{"code":"pt-BR","name":"Português (Brasil)"},"title":"Secret Hitler","subtitle":"Jogo Presencial","setup":{"cardTitle":"⚙ Configurações","toggleSocialist":"Expansão Socialista","toggleSocialistDesc":"Adiciona partido Socialista e Chairman","togglePass":"Passar Celular (Bugging/Recrutamento)","togglePassDesc":"Desligado = modo mesa, todos fecham os olhos","toggleFont":"Fonte Legível","toggleFontDesc":"Inter (sem serifa) em vez de IM Fell English","playersCardTitle":"👥 Jogadores","addPlayer":"+ Adicionar","removePlayer":"− Remover","playerDefault":"Jogador","playerPlaceholder":"Jogador {n}","playerCount":"{n} jogadores (mín {min}, máx {max})","startGame":"⚔ Iniciar Partida","errorCount":"Número inválido: {n}. Precisa entre {min} e {max}.","langLabel":"Idioma"},"cover":{"passTo":"Passe o dispositivo para","press":"[ Pressione para continuar ]","seeRole":"Veja seu papel em segredo"},"role":{"screenTag":"Seu Papel Secreto","hideBtn":"[ Esconder e passar o dispositivo ]","liberal":{"name":"LIBERAL","desc":"Você é Liberal. Descubra os fascistas e impeça Hitler de ser eleito Chanceler!"},"fascist":{"name":"FASCISTA","desc":"Você é Fascista. Ajude Hitler a tomar o poder!","descBlind":"Você é Fascista."},"hitler":{"name":"HITLER","descKnows":"Você é HITLER. Os Fascistas sabem quem você é. Finja ser Liberal.","descBlind":"Você é HITLER. Você NÃO sabe quem são os Fascistas, mas eles sabem quem você é. Finja ser Liberal.","hitlerRecruited":"⚠ Os Socialistas acham que recrutaram você. Eles não sabem que você é Hitler."},"socialist":{"name":"SOCIALISTA","desc":"Você é Socialista. Una seu partido!","descBlind":"Você é Socialista.","alone":"Você é o único Socialista por enquanto."},"alliesHitler":"Hitler:","alliesFascists":"Outros Fascistas:","alliesSocialists":"Outros Socialistas:","alliesSocialistsLabel":"Socialistas:","alliesFascistsLabel":"Fascistas:","none":"nenhum"},"game":{"turn":"TURNO","presLabel":"🎩 Presidente","chanLabel":"📜 Chanceler","chairLabel":"🪑 Chairman","trackLiberal":"🔵 Liberais","trackFascist":"🔴 Fascistas","trackSocialist":"🟢 Socialistas","hitlerZone":"⚠ HITLER ZONE","vetoAvail":"🚫 Veto disponível","censorActive":"🔇 Censura ativa"},"nominate":{"phase":"Fase 1","title":"Nominação","prompt":"<strong>{pres}</strong>, escolha seu Chanceler:","eligible":"Jogadores elegíveis","noEligible":"Nenhum jogador elegível!"},"vote":{"phase":"Fase 2","title":"Votação","instruction":"Realizem a votação física com as cartelas <strong>Ja / Nein</strong>.","result":"Resultado","approved":"✓ APROVADO","approvedSub":"Maioria Ja","rejected":"✗ REJEITADO","rejectedSub":"Empate ou Nein"},"chairman":{"phase":"Chairman","title":"Escolha o Chairman","prompt":"Chanceler <strong>{chan}</strong>, escolha o Chairman:"},"legislative":{"chairmanPhase":"Chairman","chairmanTitle":"Espiar Topo","chairmanInfo":"O Chairman deve ver o topo do baralho em segredo.","chairmanBtn":"📋 Chairman {chair}: ver o topo","chairmanResult":"Topo do Baralho","chairmanSecret":"Apenas você, Chairman, possui esta informação.","chairmanHide":"[ Ocultar e continuar ]","presPhase":"Legislativa","presTitle":"Presidente Descarta","presBtn":"📋 Presidente {pres}: comprar 3 cartas","presCover":"Comprar 3 políticas e descartar 1","presPrompt":"Escolha 1 política para <strong>DESCARTAR</strong>:","chanCover":"Receber 2 políticas e enunciar 1","chanPhase":"Chanceler","chanTitle":"Enuncie 1 Política","chanPrompt":"Escolha 1 política para <strong>ENUNCIAR</strong>:","vetoBtn":"🚫 Propor VETO das duas cartas","vetoPhase":"Veto","vetoTitle":"Proposta de Veto","vetoPrompt":"Chanceler propôs VETAR ambas. Presidente {pres}, você concorda?","vetoAccept":"✓ Sim, Vetar","vetoDecline":"✗ Não, recusar","vetoRejectedTitle":"Veto Recusado","vetoRejectedMsg":"Veto rejeitado. Chanceler deve enunciar.","announcedPhase":"Política Aprovada","announceBtn":"[ Continuar ]","chaosPhase":"Caos!","chaosTitle":"Política Caótica","chaosMsg":"3 eleições negadas! Política do topo aplicada."},"policies":{"Liberal":"Liberal","Fascista":"Fascista","Socialista":"Socialista"},"powers":{"fascistTag":"Poder Fascista","socialistTag":"Poder Socialista","investigate":{"title":"Investigar","prompt":"Presidente <strong>{pres}</strong>, escolha quem investigar:","noTarget":"Nenhum alvo disponível.","continueBtn":"Continuar","cover":"Ver a lealdade de {target}","resultTitle":"Resultado","loyaltyLabel":"Lealdade de {target}","hideBtn":"[ Ocultar e continuar ]"},"peek":{"title":"Espiar Deck","btn":"📋 Presidente {pres}: espiar as próximas 3 cartas","cover":"Ver as próximas 3 cartas","subtitle":"Próximas 3 Cartas","hideBtn":"[ Ocultar e continuar ]"},"specialElection":{"title":"Eleição Especial","prompt":"Presidente <strong>{pres}</strong>, escolha o próximo Presidente Candidato:"},"execute":{"title":"Execução","prompt":"Presidente <strong>{pres}</strong>, escolha quem <strong>EXECUTAR</strong>:","resultTitle":"Execução","resultMsg":"Executado. Papel permanece em segredo.","continueBtn":"[ Continuar ]"},"confession":{"title":"Confissão","prompt":"Presidente <strong>{pres}</strong>, escolha quem receberá sua confissão:","cover":"{pres} vai confessar sua lealdade","loyaltyLabel":"Lealdade de {pres}","hideBtn":"[ Ocultar e continuar ]"},"congress":{"title":"Congresso","cardTitle":"Instruções","steps":["Todos fechem os olhos.","Todos os <strong style=\"color:#80f090\">Socialistas</strong> abram os olhos para reconhecer o novo membro.","(Se não houver novo membro, o recrutado era Hitler!)","Todos fecham os olhos. Depois, todos abrem."],"doneBtn":"[ Congresso realizado ]"},"fiveYear":{"title":"Plano Quinquenal","msg":"2 políticas Socialistas e 1 Liberal adicionadas ao deck. Deck reembaralhado.","continueBtn":"[ Continuar ]"},"bugging":{"title":"Bugging","mesaCardTitle":"Instruções — Modo Mesa","mesaSteps":["Todos os jogadores <strong>fechem os olhos</strong>.","Apenas os <strong style=\"color:#80f090\">Socialistas</strong> abram os olhos.","Socialistas: escolham quem investigar e digitem <strong>sem tirar o celular da mesa</strong>."],"mesaBtn":"✊ Socialistas: Escolher alvo","chooseTitle":"Escolha o alvo","chooseSubtitle":"Quem investigar?","resultTitle":"Resultado","loyaltyLabel":"Lealdade de {target}","mesaStep4":"Todos os <strong style=\"color:#80f090\">Socialistas</strong> fechem os olhos.","mesaHideBtn":"[ Ocultar tela ]","waitingMsg":"AGUARDANDO","allOpenBtn":"5. Todos abram os olhos → [ Continuar ]","passIsSocialist":"Você é Socialista — veja as instruções","passNotSocialist":"Digite um número entre 1 e 9","passChoose":"Você é Socialista. Escolha quem investigar:","passResult":"Você é Socialista. Resultado do Bugging:","passInvestigated":"Investigado:","passNumLabel":"Digite um número para continuar"},"recruitment":{"title":"Recrutamento","noTargets":"Não há jogadores não-socialistas para recrutar.","continueBtn":"Continuar","mesaCardTitle":"Instruções — Modo Mesa","mesaSteps":["Todos os jogadores <strong>fechem os olhos</strong>.","Apenas os <strong style=\"color:#80f090\">Socialistas</strong> abram os olhos.","Socialistas: escolham quem recrutar e digitem <strong>sem tirar o celular da mesa</strong>."],"mesaBtn":"✊ Socialistas: Escolher recrutado","chooseTitle":"Escolha o recrutado","chooseSubtitle":"Quem recrutar?","recruited":"<strong>{target}</strong> foi recrutado para os Socialistas.","mesaStep4":"Todos os <strong style=\"color:#80f090\">Socialistas</strong> fechem os olhos.","mesaHideBtn":"[ Ocultar tela ]","waitingMsg":"AGUARDANDO","allOpenBtn":"5. Todos abram os olhos → [ Continuar ]","passIsSocialist":"Você é Socialista — veja as instruções","passNotSocialist":"Digite um número entre 1 e 9","passChoose":"Você é Socialista. Escolha quem recrutar:","passRecruited":"Recrutado:","passNumLabel":"Digite um número para continuar"}},"victory":{"Liberal":"VITÓRIA LIBERAL","Fascista":"VITÓRIA FASCISTA","Socialista":"VITÓRIA SOCIALISTA","rolesTitle":"Revelação dos Papéis","converted":"(convertido)","dead":"💀","newGame":"↩ Novo Jogo"},"checkVictory":{"liberal":"Os Liberais aprovaram {n} políticas Liberais!","fascist":"Os Fascistas aprovaram 6 políticas Fascistas!","socialist":"Os Socialistas aprovaram {n} políticas!","hitlerElected":"{name} (Hitler) eleito Chanceler na Hitler Zone!","hitlerExecuted":"{name} (Hitler) foi executado!"},"chaos":{"electionDenied":"Eleição negada ({n}/3)."},"misc":{"arrowBtn":"→","numPadInstruction":"Digite um número para continuar"}},
+};
+
+const AVAILABLE_LANGS = [
+  { code: 'en',   label: 'English'   },
+  { code: 'pt-BR', label: 'Português' },
+];
+
+let L = {};
+
+function populateLangSelect() {
+  const sel = document.getElementById('lang-select');
+  sel.innerHTML = '';
+  AVAILABLE_LANGS.forEach(lang => {
+    const opt = document.createElement('option');
+    opt.value = lang.code;
+    opt.textContent = lang.label;
+    sel.appendChild(opt);
+  });
+}
+
+function loadLang(code) {
+  if (LANG_DATA[code]) {
+    L = LANG_DATA[code];
+  } else {
+    L = LANG_DATA['en']; // fallback
+  }
+  document.getElementById('lang-select').value = code;
+  applyLangToSetup();
+}
+
+function onLangChange(code) {
+  loadLang(code);
+  salvarConfigs();
+}
+
+// Helper: replace {key} placeholders
+function t(str, vars) {
+  if (!str) return '';
+  if (!vars) return str;
+  return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] !== undefined ? vars[k] : '{' + k + '}');
+}
+
+// Apply language strings to all static elements
+function applyLangToSetup() {
+  document.getElementById('hdr-title').textContent       = L.title || 'Secret Hitler';
+  document.getElementById('hdr-subtitle').textContent    = L.subtitle || '';
+  document.getElementById('cfg-card-title').textContent  = L.setup.cardTitle;
+  document.getElementById('tog-socialist-label').textContent = L.setup.toggleSocialist;
+  document.getElementById('tog-socialist-desc').textContent  = L.setup.toggleSocialistDesc;
+  document.getElementById('tog-pass-label').textContent  = L.setup.togglePass;
+  document.getElementById('tog-pass-desc').textContent   = L.setup.togglePassDesc;
+  document.getElementById('tog-font-label').textContent  = L.setup.toggleFont;
+  document.getElementById('tog-font-desc').textContent   = L.setup.toggleFontDesc;
+  document.getElementById('tog-lang-label').textContent  = L.setup.langLabel;
+  document.getElementById('players-card-title').textContent = L.setup.playersCardTitle;
+  document.getElementById('btn-add-player').textContent  = L.setup.addPlayer;
+  document.getElementById('btn-remove-player').textContent = L.setup.removePlayer;
+  document.getElementById('btn-start').textContent       = L.setup.startGame;
+  document.getElementById('cover-pass-label').textContent = L.cover.passTo;
+  document.getElementById('role-screen-tag').textContent = L.role.screenTag;
+  document.getElementById('role-hide-btn').textContent   = L.role.hideBtn;
+  document.getElementById('game-turn-label').textContent = L.game.turn;
+  document.getElementById('track-lib-label').textContent = L.game.trackLiberal;
+  document.getElementById('track-fas-label').textContent = L.game.trackFascist;
+  document.getElementById('track-soc-label').textContent = L.game.trackSocialist;
+  document.getElementById('victory-roles-title').textContent = L.victory.rolesTitle;
+  document.getElementById('btn-new-game').textContent    = L.victory.newGame;
+  updateCountInfo();
+  renderPlayerList();
+  updateSocialistSetupVisibility();
+}
+
+// Translated policy display name
+function polName(p) {
+  return (L.policies && L.policies[p]) || p;
+}
+
+// ═══════════════ TABELAS ═══════════════
+const DIST_SOC={6:[3,2,1],7:[4,2,1],8:[4,3,1],9:[4,3,2],10:[5,3,2],11:[5,4,2],12:[6,4,2],13:[6,4,3]};
+const DIST_STD={5:[3,2,0],6:[4,2,0],7:[4,3,0],8:[5,3,0],9:[5,4,0],10:[6,4,0]};
+const PF_SOC={6:[null,'Investigar','Espiar','Matar','Matar',null],7:[null,'Investigar','Espiar','Matar','Matar',null],8:[null,'Investigar','Espiar','Matar','Matar',null],9:[null,'Investigar','Espiar','Matar','Matar',null],10:[null,'Investigar','Espiar','Matar','Matar',null],11:[null,'Investigar','Espiar','Matar','Matar',null],12:[null,'Investigar','Espiar','Matar','Matar',null],13:[null,'Investigar','Espiar','Matar','Matar',null]};
+const PF_STD={5:[null,null,'Espiar','Matar','Matar',null],6:[null,null,'Espiar','Matar','Matar',null],7:[null,'Investigar','EleicaoEspecial','Matar','Matar',null],8:[null,'Investigar','EleicaoEspecial','Matar','Matar',null],9:['Investigar','Investigar','EleicaoEspecial','Matar','Matar',null],10:['Investigar','Investigar','EleicaoEspecial','Matar','Matar',null]};
+function getPodSoc(n){if(n<9)return['Bugging','Recrutamento','PlanoQuinquenal','Congresso',null];if(n<11)return['Bugging','Recrutamento','PlanoQuinquenal','Congresso','Confissao'];return[null,'Recrutamento','PlanoQuinquenal','Recrutamento','Confissao'];}
+function libVit(n){return G.cfgSocialista&&n===8?6:5;}
+const FAS_VIT=6;
+function socVit(n){return n>8?6:5;}
+
+// ═══════════════ UTILS ═══════════════
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function vivos(){return G.jogadores.filter(j=>!G.mortos.includes(j));}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function proxPresIdx(){let idx=(G.presidIdx+1)%G.jogadores.length,t=0;while(G.mortos.includes(G.jogadores[idx])){idx=(idx+1)%G.jogadores.length;if(++t>G.jogadores.length)break;}return idx;}
+function podFasN(n){const tab=G.cfgSocialista?PF_SOC:PF_STD,l=tab[G.jogadores.length]||Array(6).fill(null);if(n===5)G.vetoOk=true;if(n<1||n>l.length)return null;return l[n-1];}
+function podSocN(n){const l=getPodSoc(G.jogadores.length);if(n<1||n>l.length)return null;return l[n-1];}
+function checkVit(){
+  const lv=libVit(G.jogadores.length),sv=socVit(G.jogadores.length);
+  if(G.polLib>=lv)return['Liberal',t(L.checkVictory.liberal,{n:lv}),'🕊️'];
+  if(G.polFas>=FAS_VIT)return['Fascista',L.checkVictory.fascist,'🔥'];
+  if(G.cfgSocialista&&G.polSoc>=sv)return['Socialista',t(L.checkVictory.socialist,{n:sv}),'✊'];
+  return null;
+}
+function logE(m){G.log.push('[T'+G.turno+'] '+m);}
+function esc(s){return(s||'').replace(/'/g,"\\'")}
+function polIcon(p){return'<div class="policy-icon">'+(p==='Liberal'?'🔵':p==='Fascista'?'🔴':'🟢')+'</div>';}
+function polEmoji(p){return p==='Liberal'?'🔵':p==='Fascista'?'🔴':'🟢';}
+function partidoCor(p){return p==='Fascista'?'#ff8080':p==='Socialista'?'#80f090':'#80b0ff';}
+function garantirDeck(){if(G.deck.length<3){G.deck=shuffle([...G.deck,...G.descarte]);G.descarte=[];}}
+
+// ═══════════════ SETUP UI ═══════════════
+function setupInit(){renderPlayerList();updateCountInfo();}
+function renderPlayerList(){
+  const l=document.getElementById('player-list');l.innerHTML='';
+  G.jogadores.forEach((n,i)=>{
+    const r=document.createElement('div');r.className='player-setup-row';
+    const ph=t(L.setup&&L.setup.playerPlaceholder||'Player {n}',{n:i+1});
+    r.innerHTML='<input type="text" value="'+n+'" placeholder="'+ph+'" oninput="G.jogadores['+i+']=this.value;salvarConfigs()">';
+    l.appendChild(r);
+  });
+}
+function addPlayer(){
+  const max=G.cfgSocialista?13:10;
+  if(G.jogadores.length>=max)return;
+  const def=(L.setup&&L.setup.playerDefault)||'Player';
+  G.jogadores.push(def+' '+(G.jogadores.length+1));
+  renderPlayerList();updateCountInfo();salvarConfigs();
+}
+function removePlayer(){const min=G.cfgSocialista?6:5;if(G.jogadores.length<=min)return;G.jogadores.pop();renderPlayerList();updateCountInfo();salvarConfigs();}
+function updateCountInfo(){
+  const min=G.cfgSocialista?6:5,max=G.cfgSocialista?13:10,n=G.jogadores.length;
+  const el=document.getElementById('player-count-info');
+  el.textContent=t((L.setup&&L.setup.playerCount)||'{n} ({min}-{max})',{n,min,max});
+  el.style.color=(n<min||n>max)?'#f09090':'var(--text3)';
+}
+function updateSocialistSetupVisibility(){
+  const row=document.getElementById('pass-toggle-row');
+  if(row) row.style.display = G.cfgSocialista ? '' : 'none';
+}
+
+document.getElementById('cfg-socialista').addEventListener('change',()=>{
+  G.cfgSocialista=document.getElementById('cfg-socialista').checked;
+  updateSocialistSetupVisibility();
+  const min=G.cfgSocialista?6:5,max=G.cfgSocialista?13:10;
+  const def=(L.setup&&L.setup.playerDefault)||'Player';
+  while(G.jogadores.length<min)G.jogadores.push(def+' '+(G.jogadores.length+1));
+  if(G.jogadores.length>max)G.jogadores=G.jogadores.slice(0,max);
+  renderPlayerList();updateCountInfo();salvarConfigs();
+});
+
+// ═══════════════ START GAME ═══════════════
+function startGame(){
+  G.cfgSocialista=document.getElementById('cfg-socialista').checked;
+  G.cfgPassar=document.getElementById('cfg-passar').checked;
+  const inputs=document.querySelectorAll('#player-list input');
+  const def=(L.setup&&L.setup.playerDefault)||'Player';
+  G.jogadores=Array.from(inputs).map((inp,i)=>inp.value.trim()||(def+' '+(i+1)));
+  salvarConfigs();
+  const min=G.cfgSocialista?6:5,max=G.cfgSocialista?13:10,n=G.jogadores.length;
+  const err=document.getElementById('setup-error');
+  if(n<min||n>max){
+    err.textContent=t((L.setup&&L.setup.errorCount)||'Invalid: {n} ({min}-{max})',{n,min,max});
+    err.style.display='block';return;
+  }
+  err.style.display='none';
+  Object.assign(G,{papeis:{},membros:{},presidIdx:0,chanceler:null,chairman:null,ultPresEleito:null,ultChanEleito:null,eleicoesNegadas:0,polLib:0,polFas:0,polSoc:0,hitlerZone:false,vetoOk:false,censura:false,mortos:[],investigados:[],deck:[],descarte:[],turno:1,fase:'nominar',poderPendente:null,hitlerNome:null,vencedor:null,eleicaoEspAtiva:false,eleicaoEspRetIdx:0,log:[],_chairmanViu:false,_legFase:null,_hitlerRecrutado:false});
+  sortearCargos();
+}
+
+function sortearCargos(){
+  const n=G.jogadores.length,dist=G.cfgSocialista?DIST_SOC:DIST_STD,[lib,fasTot,soc]=dist[n],fasN=fasTot-1;
+  const papeis=shuffle([...Array(lib).fill('Liberal'),...Array(fasN).fill('Fascista'),'Hitler',...Array(soc).fill('Socialista')]);
+  G.jogadores.forEach((nome,i)=>{
+    const p=papeis[i];G.papeis[nome]=p;
+    G.membros[nome]=p==='Liberal'?'Liberal':p==='Socialista'?'Socialista':'Fascista';
+    if(p==='Hitler')G.hitlerNome=nome;
+  });
+  G.deck=montarBaralho();
+  mostrarCargosQueue(true);
+}
+function montarBaralho(){const n=G.jogadores.length;let b;if(G.cfgSocialista){b=[...Array(5).fill('Liberal'),...Array(10).fill('Fascista'),...Array(8).fill('Socialista')];if(n===8){b.splice(b.indexOf('Fascista'),1);b.push('Liberal');}}else{b=[...Array(6).fill('Liberal'),...Array(11).fill('Fascista')];}return shuffle(b);}
+
+// ═══════════════ MOSTRAR CARGOS ═══════════════
+function mostrarCargosQueue(mostrarAliados){
+  const n=G.jogadores.length,inicio=Math.floor(Math.random()*n);
+  G._roleQueue=G.jogadores.map((_,i)=>G.jogadores[(inicio+i)%n]);
+  G._roleIdx=0;G._mostrarAliados=mostrarAliados;
+  nextRoleCard();
+}
+function nextRoleCard(){
+  if(G._roleIdx>=G._roleQueue.length){showScreen('screen-game');renderGame();return;}
+  const nome=G._roleQueue[G._roleIdx];
+  showCover(nome,L.cover.seeRole,()=>showRoleCard(nome));
+}
+function showRoleCard(nome){
+  const papel=G.papeis[nome],n=G.jogadores.length;
+  let cls=papel.toLowerCase(),icon,desc,allies='';
+  const rl=L.role;
+  if(papel==='Liberal'){
+    icon='🕊️';desc=rl.liberal.desc;
+  } else if(papel==='Hitler'){
+    icon='☠️';
+    if(G._mostrarAliados&&n<=6){
+      const fas=G.jogadores.filter(j=>G.papeis[j]==='Fascista');
+      desc=rl.hitler.descKnows;
+      allies='<strong>'+rl.alliesFascistsLabel+'</strong> '+(fas.join(', ')||rl.none);
+    } else {
+      desc=rl.hitler.descBlind;
+    }
+    if(G._hitlerRecrutado)allies+=(allies?'<br>':'')+'<span style="color:#ffcc44;">'+rl.hitler.hitlerRecruited+'</span>';
+  } else if(papel==='Fascista'){
+    icon='🔥';
+    if(G._mostrarAliados){
+      const outros=G.jogadores.filter(j=>G.papeis[j]==='Fascista'&&j!==nome);
+      desc=rl.fascist.desc;
+      allies='<strong>'+rl.alliesHitler+'</strong> '+G.hitlerNome+'<br><strong>'+rl.alliesFascists+'</strong> '+(outros.join(', ')||rl.none);
+    } else {
+      desc=rl.fascist.descBlind;
+    }
+  } else {
+    icon='✊';cls='socialista';
+    if(G._mostrarAliados){
+      const outros=G.jogadores.filter(j=>G.papeis[j]==='Socialista'&&j!==nome);
+      desc=rl.socialist.desc;
+      allies=outros.length?'<strong>'+rl.alliesSocialists+'</strong> '+outros.join(', '):rl.socialist.alone;
+    } else {
+      const outros=G.jogadores.filter(j=>G.membros[j]==='Socialista'&&j!==nome);
+      desc=rl.socialist.descBlind;
+      if(outros.length)allies='<strong>'+rl.alliesSocialistsLabel+'</strong> '+outros.join(', ');
+    }
+  }
+  const roleName = rl[papel==='Hitler'?'hitler':papel==='Fascista'?'fascist':papel==='Socialista'?'socialist':'liberal'].name;
+  document.getElementById('role-card').className='role-display '+cls;
+  document.getElementById('role-card').innerHTML='<div class="role-icon">'+icon+'</div><div class="role-name">'+roleName+'</div><div class="role-desc">'+desc+'</div>';
+  const ae=document.getElementById('role-allies');
+  ae.innerHTML=allies?'<div class="role-allies">'+allies+'</div>':'';
+  showScreen('screen-role');
+}
+function roleDone(){G._roleIdx++;nextRoleCard();}
+
+// ═══════════════ COVER ═══════════════
+function showCover(nome,instrucao,cb){
+  G._coverCb=cb;
+  document.getElementById('cover-name').textContent=nome;
+  document.getElementById('cover-btn').textContent=instrucao?'[ '+instrucao+' ]':L.cover.press;
+  showScreen('screen-cover');
+}
+function coverContinue(){if(G._coverCb){const cb=G._coverCb;G._coverCb=null;cb();}}
+
+// ═══════════════ RENDER GAME ═══════════════
+function renderGame(){
+  document.getElementById('stat-turno').textContent=G.turno;
+  const ch=document.getElementById('chaos-counter');ch.innerHTML='';
+  for(let i=0;i<3;i++){const p=document.createElement('div');p.className='chaos-pip'+(i<G.eleicoesNegadas?' filled':'');ch.appendChild(p);}
+  const lv=libVit(G.jogadores.length),sv=socVit(G.jogadores.length);
+  renderPips('pips-liberal',G.polLib,lv,'liberal');
+  renderPips('pips-fascist',G.polFas,FAS_VIT,'fascist');
+  if(G.cfgSocialista){document.getElementById('track-socialist').style.display='';renderPips('pips-socialist',G.polSoc,sv,'socialist');}
+  const pres=G.jogadores[G.presidIdx];
+  let gov='<div class="gov-bar"><div><div class="gov-role">'+L.game.presLabel+'</div><div class="gov-name">'+pres+'</div></div></div>';
+  if(G.chanceler)gov+='<div class="gov-bar"><div><div class="gov-role">'+L.game.chanLabel+'</div><div class="gov-name">'+G.chanceler+'</div></div></div>';
+  if(G.cfgSocialista&&G.chairman)gov+='<div class="gov-bar"><div><div class="gov-role">'+L.game.chairLabel+'</div><div class="gov-name">'+G.chairman+'</div></div></div>';
+  document.getElementById('gov-bar').innerHTML=gov;
+  let alerts='';
+  if(G.hitlerZone)alerts+='<div class="alert alert-warning" style="padding:6px 10px;font-size:12px;margin:2px 0;">'+L.game.hitlerZone+'</div>';
+  if(G.vetoOk)alerts+='<div class="alert alert-info" style="padding:6px 10px;font-size:12px;margin:2px 0;">'+L.game.vetoAvail+'</div>';
+  if(G.censura)alerts+='<div class="alert alert-danger" style="padding:6px 10px;font-size:12px;margin:2px 0;">'+L.game.censorActive+'</div>';
+  if(G.mortos.length)alerts+='<div class="alert" style="padding:6px 10px;font-size:12px;margin:2px 0;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text3);">💀 '+G.mortos.join(', ')+'</div>';
+  document.getElementById('status-alerts').innerHTML=alerts;
+  renderFase();
+}
+function renderPips(id,filled,total,type){const el=document.getElementById(id);el.innerHTML='';for(let i=0;i<total;i++){const p=document.createElement('div');p.className='pip '+type+(i<filled?' filled':'');el.appendChild(p);}}
+
+// ═══════════════ FASES ═══════════════
+function renderFase(){
+  const c=document.getElementById('phase-content');
+  if(G.fase==='nominar')renderNominar(c);
+  else if(G.fase==='votar')renderVotar(c);
+  else if(G.fase==='_chairman')renderEscolherChairman(c);
+  else if(G.fase==='legislativa')renderLegislativa(c);
+  else if(G.fase==='poder')renderPoder(c);
+  else if(G.fase==='proximo')avancarTurno();
+}
+
+// ── NOMINAR ──
+function renderNominar(c){
+  const pres=G.jogadores[G.presidIdx],v=vivos();
+  let elegiv=v.filter(j=>j!==pres&&j!==G.ultPresEleito&&j!==G.ultChanEleito);
+  if(v.length<=5)elegiv=v.filter(j=>j!==pres&&j!==G.ultChanEleito);
+  const ln=L.nominate;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+ln.phase+'</div><div class="phase-title">'+ln.title+'</div></div>'
+    +'<div class="alert alert-info mt-8">'+t(ln.prompt,{pres})+'</div>'
+    +'<div class="section-title">'+ln.eligible+'</div>'
+    +(elegiv.length?elegiv.map(j=>'<div class="player-item" onclick="escolherChanceler(\''+esc(j)+'\')"><div class="player-num">'+L.misc.arrowBtn+'</div><div class="player-name">'+j+'</div></div>').join('')
+    :'<div class="alert alert-danger">'+ln.noEligible+'</div>');
+}
+function escolherChanceler(nome){G.chanceler=nome;G.fase='votar';logE('Chan:'+nome);renderGame();}
+
+// ── VOTAR ──
+function renderVotar(c){
+  const lv=L.vote;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+lv.phase+'</div><div class="phase-title">'+lv.title+'</div></div>'
+    +'<div class="alert alert-info mt-8" style="font-style:normal;">'+lv.instruction+'</div>'
+    +'<div class="section-title mt-16">'+lv.result+'</div>'
+    +'<div class="vote-btn-row"><button class="btn btn-ja" onclick="resolverVoto(true)">'+lv.approved+'<br><small>'+lv.approvedSub+'</small></button>'
+    +'<button class="btn btn-nein" onclick="resolverVoto(false)">'+lv.rejected+'<br><small>'+lv.rejectedSub+'</small></button></div>';
+}
+function resolverVoto(ap){
+  if(ap){
+    if(G.hitlerZone&&G.papeis[G.chanceler]==='Hitler'){
+      G.vencedor='Fascista';logE('Hitler eleito!');
+      showVictory('Fascista',t(L.checkVictory.hitlerElected,{name:G.chanceler}),'☠️');return;
+    }
+    G.ultPresEleito=G.jogadores[G.presidIdx];G.ultChanEleito=G.chanceler;G.eleicoesNegadas=0;logE('Gov ok.');
+    if(G.cfgSocialista&&!G.censura){const cand=vivos().filter(j=>j!==G.ultPresEleito&&j!==G.chanceler);if(cand.length){G.fase='_chairman';renderGame();return;}}
+    G.fase='legislativa';renderGame();
+  }else{
+    G.chanceler=null;G.chairman=null;G.eleicoesNegadas++;
+    logE(t(L.chaos.electionDenied,{n:G.eleicoesNegadas}));
+    if(G.eleicoesNegadas>=3)politicaCaotica();else{G.presidIdx=proxPresIdx();G.turno++;G.fase='nominar';renderGame();}
+  }
+}
+function renderEscolherChairman(c){
+  const cand=vivos().filter(j=>j!==G.ultPresEleito&&j!==G.chanceler);
+  const lc=L.chairman;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+lc.phase+'</div><div class="phase-title">'+lc.title+'</div></div>'
+    +'<div class="alert alert-info mt-8">'+t(lc.prompt,{chan:G.chanceler})+'</div>'
+    +cand.map(j=>'<div class="player-item" onclick="escolherChairman(\''+esc(j)+'\')"><div class="player-num">'+L.misc.arrowBtn+'</div><div class="player-name">'+j+'</div></div>').join('');
+}
+function escolherChairman(nome){G.chairman=nome;G.fase='legislativa';renderGame();}
+
+// ── LEGISLATIVA ──
+let _mao=[];
+function renderLegislativa(c){
+  garantirDeck();
+  const ll=L.legislative;
+  if(G.cfgSocialista&&G.chairman&&!G.censura&&!G._chairmanViu){
+    c.innerHTML='<div class="phase-header"><div class="phase-tag">'+ll.chairmanPhase+'</div><div class="phase-title">'+ll.chairmanTitle+'</div></div>'
+      +'<div class="alert alert-info mt-8">'+ll.chairmanInfo+'</div>'
+      +'<button class="btn btn-ghost mt-8" onclick="chairmanEspiar()">'+t(ll.chairmanBtn,{chair:G.chairman})+'</button>';
+    return;
+  }
+  if(!G._legFase)G._legFase='pres_start';
+  if(G._legFase==='pres_start'){
+    c.innerHTML='<div class="phase-header"><div class="phase-tag">'+ll.presPhase+'</div><div class="phase-title">'+ll.presTitle+'</div></div>'
+      +'<button class="btn btn-ghost mt-8" onclick="presLegStart()">'+t(ll.presBtn,{pres:G.jogadores[G.presidIdx]})+'</button>';
+  }
+}
+function chairmanEspiar(){
+  garantirDeck();const topo=G.deck[0];
+  const ll=L.legislative;
+  showCover(G.chairman,ll.chairmanPhase,()=>{
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+ll.chairmanPhase+'</div><div class="phase-title">'+ll.chairmanResult+'</div></div>'
+      +'<div class="policy-cards mt-8"><div class="policy-card '+topo.toLowerCase()+'">'+polIcon(topo)+'<div class="policy-type">'+polName(topo)+'</div></div></div>'
+      +'<div class="text-muted mt-8">'+ll.chairmanSecret+'</div>'
+      +'<button class="btn btn-ghost mt-16" onclick="chairmanFez()">'+ll.chairmanHide+'</button>';
+    showScreen('screen-game');
+  });
+}
+function chairmanFez(){G._chairmanViu=true;G._legFase='pres_start';renderGame();}
+function presLegStart(){
+  garantirDeck();_mao=G.deck.splice(0,3);
+  const ll=L.legislative,pres=G.jogadores[G.presidIdx];
+  showCover(pres,ll.presCover,()=>{
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+ll.presPhase+'</div><div class="phase-title">'+ll.presTitle+'</div></div>'
+      +'<div class="alert alert-warning mt-8">'+ll.presPrompt+'</div>'
+      +'<div class="policy-cards mt-8">'+_mao.map((p,i)=>'<div class="policy-card '+p.toLowerCase()+'" onclick="presDescarta('+i+')">'+polIcon(p)+'<div class="policy-type">'+polName(p)+'</div></div>').join('')+'</div>';
+    showScreen('screen-game');
+  });
+}
+function presDescarta(i){
+  const ll=L.legislative;
+  G.descarte.push(_mao[i]);_mao.splice(i,1);G._legFase='chan';
+  showCover(G.chanceler,ll.chanCover,()=>{
+    let vetoBtn=G.vetoOk?'<button class="btn btn-ghost mt-8" onclick="chanVetoPropoe()">'+ll.vetoBtn+'</button>':'';
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+ll.chanPhase+'</div><div class="phase-title">'+ll.chanTitle+'</div></div>'
+      +'<div class="alert alert-warning mt-8">'+ll.chanPrompt+'</div>'
+      +'<div class="policy-cards mt-8">'+_mao.map((p,i)=>'<div class="policy-card '+p.toLowerCase()+'" onclick="chanEnuncia('+i+')">'+polIcon(p)+'<div class="policy-type">'+polName(p)+'</div></div>').join('')+'</div>'
+      +vetoBtn;
+    showScreen('screen-game');
+  });
+}
+function chanEnuncia(i){const e=_mao[i];_mao.splice(i,1);G.descarte.push(_mao[0]);G._chairmanViu=false;G._legFase=null;anunciarPolitica(e);}
+function chanVetoPropoe(){
+  const ll=L.legislative,pres=G.jogadores[G.presidIdx];
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+ll.vetoPhase+'</div><div class="phase-title">'+ll.vetoTitle+'</div></div>'
+    +'<div class="alert alert-warning mt-8">'+t(ll.vetoPrompt,{pres})+'</div>'
+    +'<div class="vote-btn-row mt-16"><button class="btn btn-ja" onclick="resVeto(true)">'+ll.vetoAccept+'</button><button class="btn btn-nein" onclick="resVeto(false)">'+ll.vetoDecline+'</button></div>';
+}
+function resVeto(aceito){
+  const ll=L.legislative;
+  if(aceito){G.descarte.push(..._mao);G.eleicoesNegadas++;logE('Veto ok.');G._chairmanViu=false;G._legFase=null;if(G.eleicoesNegadas>=3)politicaCaotica();else avancarTurno();}
+  else{
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+ll.chanPhase+'</div><div class="phase-title">'+ll.vetoRejectedTitle+'</div></div>'
+      +'<div class="alert alert-danger mt-8">'+ll.vetoRejectedMsg+'</div>'
+      +'<div class="policy-cards mt-8">'+_mao.map((p,i)=>'<div class="policy-card '+p.toLowerCase()+'" onclick="chanEnuncia('+i+')">'+polIcon(p)+'<div class="policy-type">'+polName(p)+'</div></div>').join('')+'</div>';
+  }
+}
+function anunciarPolitica(pol){
+  const ll=L.legislative;
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+ll.announcedPhase+'</div></div>'
+    +'<div class="policy-announce '+pol.toLowerCase()+' mt-8"><div class="announce-emoji">'+polEmoji(pol)+'</div><div class="announce-type">'+polName(pol).toUpperCase()+'</div></div>'
+    +'<button class="btn btn-ghost mt-16" onclick="aplicarPolitica(\''+pol+'\')">'+ll.announceBtn+'</button>';
+}
+function aplicarPolitica(pol,caotica){
+  caotica=caotica||false;
+  if(pol==='Liberal')G.polLib++;
+  else if(pol==='Fascista'){
+    G.polFas++;if(G.polFas>=3)G.hitlerZone=true;
+    const pod=podFasN(G.polFas);
+    if(pod&&!caotica){G.poderPendente=pod;G.fase='poder';logE('Fas:'+pod);renderGame();return;}
+  }else if(pol==='Socialista'){
+    G.polSoc++;const ps=podSocN(G.polSoc);
+    if(ps==='Censura')G.censura=true;
+    if(ps&&!caotica){G.poderPendente=ps;G.fase='poder';logE('Soc:'+ps);renderGame();return;}
+  }
+  const v=checkVit();if(v){showVictory(...v);return;}
+  avancarTurno();
+}
+function politicaCaotica(){
+  const ll=L.legislative;
+  G.eleicoesNegadas=0;G.ultPresEleito=null;G.ultChanEleito=null;garantirDeck();
+  const pol=G.deck.shift();
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+ll.chaosPhase+'</div><div class="phase-title">'+ll.chaosTitle+'</div></div>'
+    +'<div class="policy-announce '+pol.toLowerCase()+' mt-8"><div class="announce-emoji">⚡</div><div class="announce-type">'+polName(pol).toUpperCase()+'</div></div>'
+    +'<div class="text-muted mt-8 text-center">'+ll.chaosMsg+'</div>'
+    +'<button class="btn btn-ghost mt-16" onclick="aplicarPolitica(\''+pol+'\',true)">'+ll.announceBtn+'</button>';
+  G.fase='legislativa';renderGame();
+  document.getElementById('phase-content').innerHTML=document.getElementById('phase-content').innerHTML;
+}
+
+// ─────── PODERES ───────
+function poderFim(){G.poderPendente=null;G.fase='proximo';renderGame();}
+function renderPoder(c){
+  const pod=G.poderPendente,pres=G.jogadores[G.presidIdx];
+  if(pod==='Investigar')renderInvestigar(c,pres);
+  else if(pod==='Espiar')renderEspiar(c,pres);
+  else if(pod==='EleicaoEspecial')renderEleicaoEsp(c,pres);
+  else if(pod==='Matar')renderMatar(c,pres);
+  else if(pod==='Bugging')renderBugging(c);
+  else if(pod==='Recrutamento')renderRecrutamento(c);
+  else if(pod==='Confissao')renderConfissao(c,pres);
+  else if(pod==='Congresso')renderCongresso(c);
+  else if(pod==='PlanoQuinquenal')renderPlano(c);
+  else if(pod==='Censura'){G.poderPendente=null;G.fase='proximo';renderGame();}
+  else poderFim();
+}
+
+function renderInvestigar(c,pres){
+  const lp=L.powers.investigate,alvos=vivos().filter(j=>j!==pres&&!G.investigados.includes(j));
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.fascistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="alert alert-warning mt-8">'+t(lp.prompt,{pres})+'</div>'
+    +(alvos.length?alvos.map(j=>'<div class="player-item" onclick="doInvestigar(\''+esc(j)+'\',\''+esc(pres)+'\')"><div class="player-num">🔍</div><div class="player-name">'+j+'</div></div>').join('')
+    :'<div class="text-muted">'+lp.noTarget+'</div><button class="btn btn-ghost mt-8" onclick="poderFim()">'+lp.continueBtn+'</button>');
+}
+function doInvestigar(alvo,pres){
+  G.investigados.push(alvo);const partido=G.membros[alvo];
+  const lp=L.powers.investigate;
+  showCover(pres,t(lp.cover,{target:alvo}),()=>{
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+L.powers.fascistTag+'</div><div class="phase-title">'+lp.resultTitle+'</div></div>'
+      +'<div class="card mt-8 text-center" style="padding:20px;">'
+      +'<div style="font-size:36px;margin-bottom:8px;">'+(partido==='Fascista'?'🔴':partido==='Socialista'?'🟢':'🔵')+'</div>'
+      +'<div style="font-family:var(--font-ui);font-size:12px;letter-spacing:.2em;color:var(--text3);">'+t(lp.loyaltyLabel,{target:alvo})+'</div>'
+      +'<div style="font-family:var(--font-display);font-size:22px;margin-top:6px;color:'+partidoCor(partido)+';">'+partido.toUpperCase()+'</div></div>'
+      +'<button class="btn btn-ghost mt-16" onclick="poderFim()">'+lp.hideBtn+'</button>';
+    showScreen('screen-game');
+  });
+}
+
+function renderEspiar(c,pres){
+  const lp=L.powers.peek;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.fascistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<button class="btn btn-ghost mt-8" onclick="doEspiar(\''+esc(pres)+'\')">'+t(lp.btn,{pres})+'</button>';
+}
+function doEspiar(pres){
+  garantirDeck();const t3=G.deck.slice(0,3);
+  const lp=L.powers.peek;
+  showCover(pres,lp.cover,()=>{
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+L.powers.fascistTag+'</div><div class="phase-title">'+lp.subtitle+'</div></div>'
+      +'<div class="policy-cards mt-8">'+t3.map(p=>'<div class="policy-card '+p.toLowerCase()+'">'+polIcon(p)+'<div class="policy-type">'+polName(p)+'</div></div>').join('')+'</div>'
+      +'<button class="btn btn-ghost mt-16" onclick="poderFim()">'+lp.hideBtn+'</button>';
+    showScreen('screen-game');
+  });
+}
+
+function renderEleicaoEsp(c,pres){
+  const lp=L.powers.specialElection,alvos=vivos().filter(j=>j!==pres);
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.fascistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="alert alert-warning mt-8">'+t(lp.prompt,{pres})+'</div>'
+    +alvos.map(j=>'<div class="player-item" onclick="doEleicaoEsp(\''+esc(j)+'\')"><div class="player-num">'+L.misc.arrowBtn+'</div><div class="player-name">'+j+'</div></div>').join('');
+}
+function doEleicaoEsp(alvo){
+  G.eleicaoEspRetIdx=G.presidIdx;G.eleicaoEspAtiva=true;
+  G.presidIdx=G.jogadores.indexOf(alvo);G.chanceler=null;G.chairman=null;
+  G.turno++;G.fase='nominar';G.poderPendente=null;renderGame();
+}
+
+function renderMatar(c,pres){
+  const lp=L.powers.execute,alvos=vivos().filter(j=>j!==pres);
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.fascistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="alert alert-danger mt-8">'+t(lp.prompt,{pres})+'</div>'
+    +alvos.map(j=>'<div class="player-item" onclick="doMatar(\''+esc(j)+'\')"><div class="player-num">💀</div><div class="player-name">'+j+'</div></div>').join('');
+}
+function doMatar(alvo){
+  G.mortos.push(alvo);logE(alvo+' exec.');
+  const lp=L.powers.execute;
+  if(G.papeis[alvo]==='Hitler'){showVictory('Liberal',t(L.checkVictory.hitlerExecuted,{name:alvo}),'🕊️');return;}
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+lp.resultTitle+'</div></div>'
+    +'<div class="policy-announce fascist mt-8"><div class="announce-emoji">💀</div><div class="announce-type">'+alvo+'</div></div>'
+    +'<div class="text-muted mt-8 text-center">'+lp.resultMsg+'</div>'
+    +'<button class="btn btn-ghost mt-16" onclick="poderFim()">'+lp.continueBtn+'</button>';
+  renderGame();document.getElementById('phase-content').innerHTML=document.getElementById('phase-content').innerHTML;
+}
+
+function renderConfissao(c,pres){
+  const lp=L.powers.confession,alvos=vivos().filter(j=>j!==pres);
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="alert alert-info mt-8">'+t(lp.prompt,{pres})+'</div>'
+    +alvos.map(j=>'<div class="player-item" onclick="doConfissao(\''+esc(pres)+'\',\''+esc(j)+'\')"><div class="player-num">'+L.misc.arrowBtn+'</div><div class="player-name">'+j+'</div></div>').join('');
+}
+function doConfissao(pres,alvo){
+  const partido=G.membros[pres];
+  const lp=L.powers.confession;
+  showCover(alvo,t(lp.cover,{pres}),()=>{
+    document.getElementById('phase-content').innerHTML=
+      '<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+      +'<div class="card mt-8 text-center" style="padding:20px;">'
+      +'<div style="font-size:32px;margin-bottom:8px;">'+(partido==='Fascista'?'🔴':partido==='Socialista'?'🟢':'🔵')+'</div>'
+      +'<div style="font-family:var(--font-ui);font-size:12px;letter-spacing:.2em;color:var(--text3);">'+t(lp.loyaltyLabel,{pres})+'</div>'
+      +'<div style="font-family:var(--font-display);font-size:22px;margin-top:6px;color:'+partidoCor(partido)+';">'+partido.toUpperCase()+'</div></div>'
+      +'<button class="btn btn-ghost mt-16" onclick="poderFim()">'+lp.hideBtn+'</button>';
+    showScreen('screen-game');
+  });
+}
+
+function renderCongresso(c){
+  const lp=L.powers.congress;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="card mt-8"><div class="card-title">'+lp.cardTitle+'</div>'
+    +'<ol style="padding-left:18px;line-height:2.2;color:var(--text2);font-size:14px;">'
+    +lp.steps.map((s,i)=>'<li'+(i===2?' style="font-style:italic;color:var(--text3);"':'')+'>'+s+'</li>').join('')
+    +'</ol></div>'
+    +'<button class="btn btn-ghost mt-16" onclick="poderFim()">'+lp.doneBtn+'</button>';
+}
+
+function renderPlano(c){
+  const lp=L.powers.fiveYear;
+  if(G.deck.length<3){G.deck=shuffle([...G.deck,...G.descarte]);G.descarte=[];}
+  G.deck.push('Socialista','Socialista','Liberal');G.deck=shuffle(G.deck);
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="alert alert-success mt-8">'+lp.msg+'</div>'
+    +'<button class="btn btn-ghost mt-16" onclick="poderFim()">'+lp.continueBtn+'</button>';
+}
+
+// ─────── BUGGING ───────
+function renderBugging(c){
+  if(G.cfgPassar)initBuggingPassar();
+  else renderBuggingMesa(c);
+}
+function renderBuggingMesa(c){
+  const lp=L.powers.bugging;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="card mt-8"><div class="card-title">'+lp.mesaCardTitle+'</div>'
+    +'<ol style="padding-left:18px;line-height:2.2;color:var(--text2);font-size:14px;">'
+    +lp.mesaSteps.map(s=>'<li>'+s+'</li>').join('')
+    +'</ol></div>'
+    +'<button class="btn btn-socialist mt-16" onclick="buggingMesaEscolha()">'+lp.mesaBtn+'</button>';
+}
+function buggingMesaEscolha(){
+  const lp=L.powers.bugging;
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+lp.title+'</div><div class="phase-title">'+lp.chooseTitle+'</div></div>'
+    +'<div class="section-title">'+lp.chooseSubtitle+'</div>'
+    +vivos().map(j=>'<div class="player-item" onclick="buggingMesaRes(\''+esc(j)+'\')"><div class="player-num">🔍</div><div class="player-name">'+j+'</div></div>').join('');
+}
+function buggingMesaRes(alvo){
+  const par=G.membros[alvo];const lp=L.powers.bugging;
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+lp.title+'</div><div class="phase-title">'+lp.resultTitle+'</div></div>'
+    +'<div class="card mt-8 text-center" style="padding:20px;">'
+    +'<div style="font-size:32px;margin-bottom:8px;">'+(par==='Fascista'?'🔴':par==='Socialista'?'🟢':'🔵')+'</div>'
+    +'<div style="font-family:var(--font-ui);font-size:12px;letter-spacing:.2em;color:var(--text3);">'+t(lp.loyaltyLabel,{target:alvo})+'</div>'
+    +'<div style="font-family:var(--font-display);font-size:22px;margin-top:6px;color:'+partidoCor(par)+';">'+par.toUpperCase()+'</div></div>'
+    +'<div class="card mt-8"><ol style="padding-left:18px;line-height:2.2;color:var(--text2);font-size:14px;" start="4"><li>'+lp.mesaStep4+'</li></ol></div>'
+    +'<button class="btn btn-ghost mt-8" onclick="buggingMesaOcultar()">'+lp.mesaHideBtn+'</button>';
+}
+function buggingMesaOcultar(){
+  const lp=L.powers.bugging;
+  document.getElementById('phase-content').innerHTML=
+    '<div style="text-align:center;padding:60px 24px;">'
+    +'<div style="font-size:72px;animation:pulse 2s ease-in-out infinite;">🙈</div>'
+    +'<div style="font-family:var(--font-ui);font-size:11px;letter-spacing:.3em;color:var(--text3);margin-top:16px;">'+lp.waitingMsg+'</div></div>'
+    +'<button class="btn btn-ghost" onclick="poderFim()">'+lp.allOpenBtn+'</button>';
+}
+
+let _bQ=[],_bIdx=0,_bAlvo=null,_bPar=null;
+function initBuggingPassar(){
+  const v=vivos(),ini=Math.floor(Math.random()*v.length);
+  _bQ=v.map((_,i)=>v[(ini+i)%v.length]);_bIdx=0;_bAlvo=null;_bPar=null;
+  buggingPassarNext();
+}
+function buggingPassarNext(){
+  if(_bIdx>=_bQ.length){poderFim();return;}
+  const nome=_bQ[_bIdx],ehS=G.membros[nome]==='Socialista';
+  const lp=L.powers.bugging;
+  showCover(nome,ehS?lp.passIsSocialist:lp.passNotSocialist,()=>{
+    showScreen('screen-power-pass');
+    document.getElementById('power-pass-tag').textContent=lp.title;
+    document.getElementById('power-pass-title').textContent=nome;
+    const cont=document.getElementById('power-pass-content');
+    const numpad='<div class="section-title mt-16">'+lp.passNumLabel+'</div><div class="num-pad">'+[1,2,3,4,5,6,7,8,9].map(n=>'<button class="num-btn" onclick="buggingPassarNum()">'+n+'</button>').join('')+'</div>';
+    if(ehS){
+      if(!_bAlvo){
+        const outros=vivos().filter(j=>j!==nome);
+        cont.innerHTML='<div class="alert alert-success mt-8">'+lp.passChoose+'</div>'
+          +outros.map(j=>'<div class="player-item" onclick="buggingPassarEsc(\''+esc(j)+'\')"><div class="player-num">🔍</div><div class="player-name">'+j+'</div></div>').join('');
+      }else{
+        cont.innerHTML='<div class="alert alert-success mt-8">'+lp.passResult+'</div>'
+          +'<div class="card mt-8 text-center" style="padding:16px;">'
+          +'<div style="font-family:var(--font-ui);font-size:12px;color:var(--text3);">'+lp.passInvestigated+' <strong style="color:var(--gold2)">'+_bAlvo+'</strong></div>'
+          +'<div style="font-family:var(--font-display);font-size:20px;margin-top:8px;color:'+partidoCor(_bPar)+';">'+_bPar.toUpperCase()+'</div></div>'
+          +numpad;
+      }
+    }else{
+      cont.innerHTML='<div class="alert alert-info mt-8">'+lp.passNotSocialist+':</div>'+numpad;
+    }
+  });
+}
+function buggingPassarEsc(alvo){
+  const lp=L.powers.bugging;
+  _bAlvo=alvo;_bPar=G.membros[alvo];
+  document.getElementById('power-pass-content').innerHTML=
+    '<div class="alert alert-success mt-8">'+lp.passResult+'</div>'
+    +'<div class="card mt-8 text-center" style="padding:16px;">'
+    +'<div style="font-family:var(--font-ui);font-size:12px;color:var(--text3);">'+lp.passInvestigated+' <strong style="color:var(--gold2)">'+_bAlvo+'</strong></div>'
+    +'<div style="font-family:var(--font-display);font-size:20px;margin-top:8px;color:'+partidoCor(_bPar)+';">'+_bPar.toUpperCase()+'</div></div>'
+    +'<div class="section-title mt-16">'+lp.passNumLabel+'</div>'
+    +'<div class="num-pad">'+[1,2,3,4,5,6,7,8,9].map(n=>'<button class="num-btn" onclick="buggingPassarNum()">'+n+'</button>').join('')+'</div>';
+}
+function buggingPassarNum(){
+  _bIdx++;
+  if(_bIdx<_bQ.length)buggingPassarNext();
+  else{showScreen('screen-game');poderFim();}
+}
+
+// ─────── RECRUTAMENTO ───────
+function renderRecrutamento(c){
+  const naoSoc=vivos().filter(j=>G.membros[j]!=='Socialista');
+  const lp=L.powers.recruitment;
+  if(!naoSoc.length){
+    c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+      +'<div class="alert alert-info mt-8">'+lp.noTargets+'</div>'
+      +'<button class="btn btn-ghost mt-8" onclick="poderFim()">'+lp.continueBtn+'</button>';
+    return;
+  }
+  if(G.cfgPassar)initRecrutPassar(naoSoc);
+  else renderRecrutMesa(c,naoSoc);
+}
+function renderRecrutMesa(c,naoSoc){
+  const lp=L.powers.recruitment;
+  c.innerHTML='<div class="phase-header"><div class="phase-tag">'+L.powers.socialistTag+'</div><div class="phase-title">'+lp.title+'</div></div>'
+    +'<div class="card mt-8"><div class="card-title">'+lp.mesaCardTitle+'</div>'
+    +'<ol style="padding-left:18px;line-height:2.2;color:var(--text2);font-size:14px;">'
+    +lp.mesaSteps.map(s=>'<li>'+s+'</li>').join('')
+    +'</ol></div>'
+    +'<button class="btn btn-socialist mt-16" onclick="recrutMesaEscolha()">'+lp.mesaBtn+'</button>';
+}
+function recrutMesaEscolha(){
+  const lp=L.powers.recruitment,naoSoc=vivos().filter(j=>G.membros[j]!=='Socialista');
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+lp.title+'</div><div class="phase-title">'+lp.chooseTitle+'</div></div>'
+    +'<div class="section-title">'+lp.chooseSubtitle+'</div>'
+    +naoSoc.map(j=>'<div class="player-item" onclick="recrutMesaFaz(\''+esc(j)+'\')"><div class="player-num">✊</div><div class="player-name">'+j+'</div></div>').join('');
+}
+function recrutMesaFaz(alvo){
+  if(G.papeis[alvo]!=='Hitler')G.membros[alvo]='Socialista';
+  else G._hitlerRecrutado=true;
+  const lp=L.powers.recruitment;
+  document.getElementById('phase-content').innerHTML=
+    '<div class="phase-header"><div class="phase-tag">'+lp.title+'</div></div>'
+    +'<div class="alert alert-success mt-8">'+t(lp.recruited,{target:alvo})+'</div>'
+    +'<div class="card mt-8"><ol style="padding-left:18px;line-height:2.2;color:var(--text2);font-size:14px;" start="4"><li>'+lp.mesaStep4+'</li></ol></div>'
+    +'<button class="btn btn-ghost mt-8" onclick="recrutMesaOcultar()">'+lp.mesaHideBtn+'</button>';
+}
+function recrutMesaOcultar(){
+  const lp=L.powers.recruitment;
+  document.getElementById('phase-content').innerHTML=
+    '<div style="text-align:center;padding:60px 24px;">'
+    +'<div style="font-size:72px;animation:pulse 2s ease-in-out infinite;">🙈</div>'
+    +'<div style="font-family:var(--font-ui);font-size:11px;letter-spacing:.3em;color:var(--text3);margin-top:16px;">'+lp.waitingMsg+'</div></div>'
+    +'<button class="btn btn-ghost" onclick="recrutMesaAbrir()">'+lp.allOpenBtn+'</button>';
+}
+function recrutMesaAbrir(){G.poderPendente=null;G.fase='proximo';mostrarCargosQueue(false);}
+
+let _rQ=[],_rIdx=0,_rAlvo=null;
+function initRecrutPassar(naoSoc){
+  const v=vivos(),ini=Math.floor(Math.random()*v.length);
+  _rQ=v.map((_,i)=>v[(ini+i)%v.length]);_rIdx=0;_rAlvo=null;
+  recrutPassarNext(naoSoc);
+}
+function recrutPassarNext(naoSoc){
+  if(!naoSoc)naoSoc=vivos().filter(j=>G.membros[j]!=='Socialista');
+  if(_rIdx>=_rQ.length){G.poderPendente=null;G.fase='proximo';mostrarCargosQueue(false);return;}
+  const nome=_rQ[_rIdx],ehS=G.membros[nome]==='Socialista';
+  const lp=L.powers.recruitment;
+  showCover(nome,ehS?lp.passIsSocialist:lp.passNotSocialist,()=>{
+    showScreen('screen-power-pass');
+    document.getElementById('power-pass-tag').textContent=lp.title;
+    document.getElementById('power-pass-title').textContent=nome;
+    const cont=document.getElementById('power-pass-content');
+    const numpad='<div class="section-title mt-16">'+lp.passNumLabel+'</div><div class="num-pad">'+[1,2,3,4,5,6,7,8,9].map(n=>'<button class="num-btn" onclick="recrutPassarNum()">'+n+'</button>').join('')+'</div>';
+    if(ehS){
+      if(!_rAlvo){
+        cont.innerHTML='<div class="alert alert-success mt-8">'+lp.passChoose+'</div>'
+          +naoSoc.map(j=>'<div class="player-item" onclick="recrutPassarEsc(\''+esc(j)+'\')"><div class="player-num">✊</div><div class="player-name">'+j+'</div></div>').join('');
+      }else{
+        cont.innerHTML='<div class="alert alert-success mt-8">'+lp.passRecruited+' <strong>'+_rAlvo+'</strong></div>'+numpad;
+      }
+    }else{
+      cont.innerHTML='<div class="alert alert-info mt-8">'+lp.passNotSocialist+':</div>'+numpad;
+    }
+  });
+}
+function recrutPassarEsc(alvo){
+  const lp=L.powers.recruitment;
+  _rAlvo=alvo;if(G.papeis[alvo]!=='Hitler')G.membros[alvo]='Socialista';
+  else G._hitlerRecrutado=true;
+  document.getElementById('power-pass-content').innerHTML=
+    '<div class="alert alert-success mt-8">'+lp.passRecruited+' <strong>'+_rAlvo+'</strong></div>'
+    +'<div class="section-title mt-16">'+lp.passNumLabel+'</div>'
+    +'<div class="num-pad">'+[1,2,3,4,5,6,7,8,9].map(n=>'<button class="num-btn" onclick="recrutPassarNum()">'+n+'</button>').join('')+'</div>';
+}
+function recrutPassarNum(){
+  _rIdx++;
+  if(_rIdx<_rQ.length)recrutPassarNext(null);
+  else{showScreen('screen-game');G.poderPendente=null;G.fase='proximo';mostrarCargosQueue(false);}
+}
+
+// ─────── AVANÇAR TURNO ───────
+function avancarTurno(){
+  G.chanceler=null;G.chairman=null;
+  if(G.eleicaoEspAtiva){
+    G.eleicaoEspAtiva=false;
+    let idx=(G.eleicaoEspRetIdx+1)%G.jogadores.length,t=0;
+    while(G.mortos.includes(G.jogadores[idx])){idx=(idx+1)%G.jogadores.length;if(++t>G.jogadores.length)break;}
+    G.presidIdx=idx;
+  }else{G.presidIdx=proxPresIdx();}
+  G.turno++;G.fase='nominar';renderGame();
+}
+
+// ─────── VITÓRIA ───────
+function showVictory(team,reason,icon){
+  const cores={Liberal:'#7ab0ff',Fascista:'#ff8080',Socialista:'#80f090'};
+  const lv=L.victory;
+  document.getElementById('victory-icon').textContent=icon;
+  document.getElementById('victory-title').style.color=cores[team]||'var(--gold2)';
+  document.getElementById('victory-title').textContent=lv[team]||('VITÓRIA '+team.toUpperCase());
+  document.getElementById('victory-reason').textContent=reason;
+  document.getElementById('victory-roles').innerHTML=G.jogadores.map(n=>{
+    const p=G.papeis[n]||'?',morto=G.mortos.includes(n)?' '+lv.dead:'';
+    const conv=G.membros[n]==='Socialista'&&p!=='Socialista'?' <em style="color:#80f090">('+lv.converted+')</em>':'';
+    return'<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:14px;"><strong>'+n+'</strong>: '+p+conv+morto+'</div>';
+  }).join('');
+  showScreen('screen-victory');
+}
+
+// ─────── FONTE ───────
+function toggleFonte(legivel){
+  document.documentElement.classList.toggle('legivel', legivel);
+  salvarConfigs();
+}
+
+// ─────── PERSISTÊNCIA ───────
+function salvarConfigs(){
+  try{
+    localStorage.setItem('sh_config', JSON.stringify({
+      jogadores: G.jogadores,
+      cfgSocialista: document.getElementById('cfg-socialista').checked,
+      cfgPassar: document.getElementById('cfg-passar').checked,
+      cfgFonte: document.getElementById('cfg-fonte').checked,
+      lang: document.getElementById('lang-select').value,
+    }));
+  }catch(e){}
+}
+function carregarConfigs(){
+  try{
+    const raw=localStorage.getItem('sh_config');
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(d.jogadores&&d.jogadores.length)G.jogadores=d.jogadores;
+    document.getElementById('cfg-socialista').checked=!!d.cfgSocialista;
+    document.getElementById('cfg-passar').checked=d.cfgPassar!==false;
+    document.getElementById('cfg-fonte').checked=!!d.cfgFonte;
+    G.cfgSocialista=!!d.cfgSocialista;
+    G.cfgPassar=d.cfgPassar!==false;
+    document.documentElement.classList.toggle('legivel',!!d.cfgFonte);
+    return d.lang||null;
+  }catch(e){return null;}
+}
+
+// ─────── INIT ───────
+G.jogadores=['Jogador 1','Jogador 2','Jogador 3','Jogador 4','Jogador 5'];
+populateLangSelect();
+const savedLang = carregarConfigs();
+loadLang(savedLang || 'en');
+setupInit();
+</script>
+</body>
+</html>
