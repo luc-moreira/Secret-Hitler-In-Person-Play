@@ -32,9 +32,9 @@ No installation, dependencies, or server setup is required.
 
 # Option 2: GitHub Pages
 
-This project can is hosted directly in GitHub Pages.
+This project is hosted directly in GitHub Pages.
 
-Play here: (paste link here)
+Play here: https://brluquinha19.github.io/Secret-Hitler-In-Person-Play/
 
 # How to Play
 
