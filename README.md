@@ -34,7 +34,7 @@ No installation, dependencies, or server setup is required.
 
 This project is hosted directly in GitHub Pages.
 
-Play here: https://brluquinha19.github.io/Secret-Hitler-In-Person-Play/
+Play here: https://luc-moreira.github.io/Secret-Hitler-In-Person-Play/
 
 # How to Play
 
